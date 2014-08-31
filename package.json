@@ -1,6 +1,6 @@
 {
   "name": "cluster-deploy",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Deploying Cluster",
   "main": "index.js",
   "bin": {
@@ -10,5 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "async": "^0.9.0",
+    "ssh2": "^0.3.6"
+  }
 }

@@ -2,8 +2,9 @@
 var Connection = require('ssh2');
 var async = require('async');
 
-var config = require('../deploy.json');
-var branch = process.argv[2] || 'master';
+var config = require(process.cwd() + '/' + process.argv[2]);
+console.log(config);
+var branch = process.argv[3] || 'master';
 
 var ip = process.env.SERVER_IP;
 

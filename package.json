@@ -1,0 +1,14 @@
+{
+  "name": "cluster-deploy",
+  "version": "0.0.0",
+  "description": "Deploying Cluster",
+  "main": "index.js",
+  "bin": {
+    "deploy": "./deploy"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

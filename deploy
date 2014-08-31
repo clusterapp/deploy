@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+var Connection = require('ssh2');
+var async = require('async');
+
+var config = require('../deploy.json');
+var branch = process.argv[2] || 'master';
+
+var ip = process.env.SERVER_IP;
+
+console.log('Deploying ', branch, 'to', ip);
+
+function runCmd(cmd, cb) {
+  console.log('Running', cmd);
+  cmd = config.prefix + ' && cd ' + config.location + ' && ' + cmd;
+  conn.exec(cmd, { pty: true }, function(err, stream) {
+    stream.on('data', function(data) {
+      if(cmd.indexOf('npm install') > -1) return;
+      if(!!data) console.log('' + data);
+    }).stderr.on('data', function(data) {
+      console.log('ERR' + data);
+      return cb(err);
+    }).on('close', function() {
+      console.log('Finished command');
+      return cb();
+    });
+  });
+}
+
+var conn = new Connection();
+
+var COMMANDS = [
+  config.stop_server,
+  'git pull',
+  'git checkout ' + branch,
+].concat(config.post_checkout).concat([config.start_server]);
+
+conn.on('ready', function() {
+  console.log('connection ready');
+  async.eachSeries(COMMANDS, runCmd, function(e) {
+    console.log('Finished');
+    if(e) console.log(e);
+    conn.end();
+  });
+}).connect({
+  host: ip,
+  username: 'root',
+  privateKey: require('fs').readFileSync('/Users/jackfranklin/.ssh/id_rsa')
+});

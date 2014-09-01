@@ -33,6 +33,7 @@ var COMMANDS = [
   config.stop_server,
   'git pull',
   'git checkout ' + branch,
+  'git pull origin ' + branch,
 ].concat(config.post_checkout).concat([config.start_server]);
 
 conn.on('ready', function() {
